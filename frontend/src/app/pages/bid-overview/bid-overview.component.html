@@ -1,0 +1,453 @@
+<div class="row gy-5 gx-xl-8">
+    <div class="col-xl-12">
+        <div class="row g-5 g-xl-8">
+            <div class="card card-custom">
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bolder text-dark">Bid Overview</span><span
+                            class="text-muted mt-1 fw-bold fs-7">
+                            Details</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-5">
+                    <!-- begin::Item -->
+                    <div class="row">
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-success">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs027.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-success"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Date of submission </a>
+                                <span class="text-muted fw-bold">{{ sharedData?.date | date:'dd-MM-yyyy' }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-success">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs027.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-success"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Email </a>
+                                <span class="text-muted fw-bold">{{ sharedData?.email}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+
+
+
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-success">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs027.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-success"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Time of submission </a>
+                                <span class="text-muted fw-bold">{{formatTime( sharedData?.time) }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-warning">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-warning"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Project Title
+                                </a>
+                                <span class="text-muted fw-bold">{{sharedData?.project_title}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-primary">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/general/gen022.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-primary"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a href='#' class="text-dark fs-6 fw-bolder">
+                                    URL
+                                </a>
+                                <span class="text-muted fw-bold">
+                                    <a href={{sharedData?.url}} target="_blank" class="text-muted  fs-6 fw-bolder">
+                                        {{sharedData?.url}}</a></span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-danger">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/coding/cod008.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-danger"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Proposals Count
+                                </a>
+                                <span
+                                    class="text-muted fw-bold">{{formatLargeInteger(sharedData?.proposals_count)}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-info">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/general/gen049.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-info"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Submitted By
+                                </a>
+                                <span class="text-muted fw-bold">{{ sharedData?.submitted_by }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+
+
+
+
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-success">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs027.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-success"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Verified </a>
+                                <span class="text-muted fw-bold">{{ sharedData?.verified | titlecase }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <!-- <div class="d-flex col-md-6 col-12 align-items-center">
+       begin::Symbol -->
+                        <!-- <div class="symbol symbol-50px me-5">
+            <span class="symbol-label bg-light-warning">
+              <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                class="svg-icon svg-icon-2x svg-icon-warning"></span>
+            </span>
+          </div> -->
+                        <!-- end::Symbol -->
+                        <!-- begin::Text -->
+                        <!-- <div class="d-flex flex-column">
+            <a  class="text-dark  fs-6 fw-bolder">
+              Time of Submission
+            </a>
+            <span class="text-muted fw-bold">{{sharedData?.time_of_submission}}</span>
+          </div> -->
+                        <!-- end::Text 
+        </div> -->
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-primary">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/general/gen022.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-primary"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Hired
+                                </a>
+                                <span class="text-muted fw-bold">{{sharedData?.hired | titlecase}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-danger">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/coding/cod008.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-danger"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Account
+                                </a>
+                                <span class="text-muted fw-bold">{{sharedData?.account}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+
+
+
+
+
+
+
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+
+
+
+
+
+                        <!-- dsa -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-success">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs027.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-success"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Skills Required </a>
+                                <span class="text-muted fw-bold">{{ sharedData?.skills_required }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-primary">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/general/gen022.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-primary"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Price
+                                </a>
+                                <span class="text-muted fw-bold">{{formatLargeInteger(sharedData?.price.toFixed(2))
+                                    }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-danger">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/coding/cod008.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-danger"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Fixed
+                                </a>
+                                <span class="text-muted fw-bold">{{sharedData?.fixed | titlecase}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-info">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/general/gen049.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-info"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Remarks
+                                </a>
+                                <span class="text-muted fw-bold">{{ sharedData?.remarks }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+
+                        <!-- dsds -->
+
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-success">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs027.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-success"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Total Connects Count </a>
+                                <span class="text-muted fw-bold">{{sharedData?.total_connects_count }}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-warning">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-warning"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="  fs-6 text-dark fw-bolder">
+                                    user_id
+                                </a>
+                                <span class="text-muted fw-bold">{{sharedData?.user_id}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+
+
+
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-warning">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-warning"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="  fs-6 text-dark fw-bolder">
+                                    Response
+                                </a>
+                                <span class="text-muted fw-bold">{{sharedData?.response}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+
+
+
+
+                        <!-- begin::Item -->
+                        <div class="d-flex  col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-info">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/general/gen049.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-info"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Project Description
+                                </a>
+                                <span class="text-muted fw-bold" [innerHTML]="sharedData?.project_description"></span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                        <div class="d-flex  col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-warning">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-warning"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="text-dark  fs-6 fw-bolder">
+                                    Submitted Bid Description
+                                </a>
+                                <span class="text-muted fw-bold"
+                                    [innerHtml]="sharedData?.submitted_bid_description"></span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
+
+
+                        <!-- end::Item -->
+                        <!-- begin::Item -->
+                    </div>
+                    <!-- dasda -->
+                    <button type="button" (click)="goBack()" class="btn btn-lg btn-light-primary me-3 my-2">
+                        <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr063.svg'"
+                            class="svg-icon svg-icon-4 me-1"></span>
+                        Back
+                    </button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

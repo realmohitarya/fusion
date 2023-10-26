@@ -1,0 +1,676 @@
+<!-- begin::Header -->
+
+<!-- <div class="card-header border-0 pt-5">
+  <h3 class="card-title align-items-start flex-column">
+    <span class="card-label fw-bolder fs-3 mb-1">Members Statistics</span>
+    <span class="text-muted mt-1 fw-bold fs-7">Over 500 members</span>
+  </h3>
+  <div
+    class="card-toolbar"
+    data-bs-toggle="tooltip"
+    data-bs-placement="top"
+    data-bs-trigger="hover"
+    title="Click to add a user"
+  >
+    <a href="#" class="btn btn-sm btn-light-primary">
+      <span
+        [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
+        class="svg-icon svg-icon-3"
+      ></span>
+      New Member
+    </a>
+  </div>
+</div> -->
+<!-- end::Header -->
+<!-- begin::Body -->
+
+
+<div class="row g-5 g-xl-8" *ngIf="!showForm">
+
+
+
+  <!-- begin::Col -->
+  <div class="col-xl-12" *ngIf="chartData.length">
+    <app-mixed-widget11 class="card card-xl-stretch mb-xl-8" chartColor="primary" chartHeight="300px"
+      [chartData]="chartData" [totalBids]="totalBids" [chartMonths]="chartMonths"></app-mixed-widget11>
+  </div>
+  <!-- end::Col -->
+</div>
+
+
+
+
+
+
+<div class="card" *ngIf="!showForm">
+  <div class="card-body py-3">
+    <div class="table-responsive">
+      <!-- begin::Table -->
+      <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4" *ngIf="!showStepper">
+        <!-- begin::Table head -->
+
+        <!-- begin::Table head -->
+        <thead>
+          <tr class="fw-bolder text-muted">
+            <!-- <th class="w-25px">
+              <div class="form-check form-check-sm form-check-custom form-check-solid">
+                <input class="form-check-input" type="checkbox" value="1" data-kt-check="true"
+                  data-kt-check-target=".widget-9-check" />
+              </div>
+            </th> -->
+            <th class="min-w-100% text-dark fw-bolder">#</th>
+            <!-- <th class="min-w-150px">Date</th> -->
+            <th class="min-w-150px text-dark fw-bolder">Project Title</th>
+            <th class="min-w-150px text-dark fw-bolder">URL</th>
+            <th class="min-w-150px text-dark fw-bolder">Proposals Count</th>
+            <!-- <th class="min-w-150px">Verified</th>
+            <th class="min-w-150px">Time of Submission</th>
+            <th class="min-w-150px">Response</th>
+            <th class="min-w-150px">Hired</th>
+            <th class="min-w-150px">Account</th>
+            <th class="min-w-150px">Project Description</th>
+            <th class="min-w-150px">Skills Required</th>
+            <th class="min-w-150px">Submitted Bid Description</th>
+            <th class="min-w-150px">Price</th>
+            <th class="min-w-150px">Fixed</th>
+            <th class="min-w-150px">Remarks</th>
+            <th class="min-w-150px">Total Connects Count</th>
+            <th class="min-w-150px">user_id</th> -->
+            <th class="min-w-150px text-dark fw-bolder">Fixed</th>
+            <th class="min-w-150px text-dark fw-bolder">Verified</th>
+            <th class="min-w-150px text-dark fw-bolder">Total Connects</th>
+            <th class="min-w-150px text-dark fw-bolder">Price</th>
+            <th class="min-w-150px text-dark fw-bolder" colspan="3">Actions</th>
+
+
+          </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+          <ng-container *ngIf="!isdataLoading; else loadingTemplate">
+            <ng-container *ngIf="items.length > 0; else noLength">
+              <tr *ngFor="let item of items; let i = index">
+                <td class="text-dark fw-bold">{{ (currentPage - 1) * perPage + (i + 1) }} </td>
+                <!-- <td class="text-muted fw-bold" >{{ item.date }}</td> -->
+                <td class="text-muted fw-bold">{{ item.project_title }}</td>
+                <td class="text-muted fw-bold"><a href={{item.url}} target="_blank"
+                    class="text-muted text-hover-primary fs-6 fw-bolder">{{ item.url }}</a></td>
+                <td class="text-muted fw-bold">{{ formatLargeInteger(item.proposals_count) }}</td>
+                <!-- <td class="text-muted fw-bold" >{{ item.verified }}</td>
+              <td>{{ item.time_of_submission }}</td>
+              <td>{{ item.response }}</td> -->
+                <!-- <td>{{ item.hired }}</td>
+              <td>{{ item.account }}</td>
+              <td>{{ item.project_description }}</td>
+              <td>{{ item.skills_required }}</td>
+              <td>{{ item.submitted_bid_description }}</td>
+              <td>{{ item.price }}</td>
+              <td>{{ item.fixed }}</td>
+              <td>{{ item.remarks }}</td> 
+              <td>{{ item.total_connects_count }}</td>
+              <td>{{ item.user_id }}</td> -->
+                <td>
+                  <span
+                    class="{{ item.fixed == 'true' ? 'badge badge-light-success' :item.fixed == 'false'? 'badge badge-light-danger' :''}}">
+                    {{ item.fixed |titlecase }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="{{ item.verified == 'true' ? 'badge badge-light-success' :item.verified == 'false'? 'badge badge-light-danger':'' }}">
+                    {{
+
+                    item.verified | titlecase}}
+                  </span>
+                </td>
+                <td class="text-muted fw-bold">{{ item.total_connects_count }}</td>
+                <td class="text-muted fw-bold">{{ item.price }}</td>
+                <td class="d-flex">
+                  <button (click)="navigateToOverview(item.id)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                    me-1">
+                    <i class="fa fa-eye p-0 m-0"></i>
+                  </button>
+                  <button (click)="editData(item,i)" class="
+                  btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                  me-1
+                ">
+                    <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                      class="svg-icon svg-icon-3"></span>
+                  </button>
+                  <button *ngIf="user?.user?.is_admin == 1" (click)="deleteItem(item.id)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                    me-1">
+                    <span [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'"
+                      class="svg-icon svg-icon-3"></span>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-template #noLength>
+              <tr>
+                <td colspan="9">
+                  <div class="text-center "> No record found </div>
+                </td>
+              </tr>
+            </ng-template>
+          </ng-container>
+
+          <ng-template #loadingTemplate>
+            <tr>
+              <td colspan="9">
+                <div class="text-center py-10"> Loading... <i class="fa fa-spinner fa-spin"></i> </div>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+        <!-- end::Table body -->
+
+      </table>
+      <!-- end::Table -->
+    </div>
+    <div class="pb-10 pt-5 d-flex" *ngIf="totalItems > perPage">
+      <button [disabled]="currentPage == 1" type="button" class="btn btn-lg btn-light-primary me-3"
+        (click)="previousPage()">
+        <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr063.svg'" class="svg-icon svg-icon-4 me-1"></span>
+        Previous
+      </button>
+      <!-- <button *ngIf="currentPage > 1" class="btn" (click)="previousPage()">Previous</button> -->
+      <button [disabled]="currentPage == totalPages" type="button" class="btn btn-lg btn-light-primary me-3"
+        (click)="nextPage()">
+        Next
+        <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr064.svg'" class="svg-icon svg-icon-4 me-1"></span>
+      </button>
+      <!-- <button *ngIf="currentPage < totalPages" class="btn" (click)="nextPage()">Next</button> -->
+    </div>
+  </div>
+
+
+</div>
+
+
+<!-- begin::Body -->
+
+
+
+<div class="" *ngIf="showForm">
+  <!-- YourComponent.html -->
+
+  <div class="w-100 d-md-flex d-block pb-5 ">
+    <div class="">
+      <div class="h-100  stepper stepper-pills stepper-column
+      d-flex flex-column flex-xl-row flex-row-fluid
+    " id="kt_create_account_stepper">
+        <!--begin::Aside-->
+        <div
+          class="card d-flex h-100 justify-content-center justify-content-xl-start flex-row-auto w-100 w-xl-300px w-xxl-400px me-9">
+          <div class="card-body px-6 px-lg-10 px-xxl-15 py-20">
+            <div class="stepper-nav">
+
+              <div class="stepper-item" [ngClass]="{
+              current: step  === 1,
+              completed: step  > 1
+            }">
+                <!--begin::Wrapper-->
+                <div class="stepper-wrapper">
+                  <!--begin::Icon-->
+                  <div class="stepper-icon w-40px h-40px">
+                    <i class="stepper-check fas fa-check"></i>
+                    <span class="stepper-number">1</span>
+                  </div>
+                  <!--end::Icon-->
+
+                  <!--begin::Label-->
+                  <div class="stepper-label">
+                    <h3 class="stepper-title">
+                      Project Info
+                    </h3>
+
+                    <div class="stepper-desc fw-semibold">
+                      Setup Your Project Info
+                    </div>
+                  </div>
+                  <!--end::Label-->
+                </div>
+                <!--end::Wrapper-->
+
+                <!--begin::Line-->
+                <div class="stepper-line h-40px"></div>
+                <!--end::Line-->
+              </div>
+
+              <div class="stepper-item" [ngClass]="{
+              current: step === 2,
+              completed: step > 2
+            }">
+                <!--begin::Wrapper-->
+                <div class="stepper-wrapper">
+                  <!--begin::Icon-->
+                  <div class="stepper-icon w-40px h-40px">
+                    <i class="stepper-check fas fa-check"></i>
+                    <span class="stepper-number">2</span>
+                  </div>
+                  <!--end::Icon-->
+
+                  <!--begin::Label-->
+                  <div class="stepper-label">
+                    <h3 class="stepper-title">
+                      Project Detail
+                    </h3>
+                    <div class="stepper-desc fw-semibold">
+                      Setup Your Project Detail
+                    </div>
+                  </div>
+                  <!--end::Label-->
+                </div>
+                <!--end::Wrapper-->
+
+                <!--begin::Line-->
+                <div class="stepper-line h-40px"></div>
+                <!--end::Line-->
+              </div>
+
+              <div class="stepper-item" [ngClass]="{
+              current: step === 3,
+              completed: step > 3
+            }">
+                <!--begin::Wrapper-->
+                <div class="stepper-wrapper">
+                  <!--begin::Icon-->
+                  <div class="stepper-icon w-40px h-40px">
+                    <i class="stepper-check fas fa-check"></i>
+                    <span class="stepper-number">3</span>
+                  </div>
+                  <!--end::Icon-->
+
+                  <!--begin::Label-->
+                  <div class="stepper-label">
+                    <h3 class="stepper-title">
+                      Project Description
+                    </h3>
+                    <div class="stepper-desc fw-semibold">
+                      Your Business Project Description
+                    </div>
+                  </div>
+                  <!--end::Label-->
+                </div>
+                <!--end::Wrapper-->
+
+                <!--begin::Line-->
+                <!-- <div class="stepper-line h-40px"></div> -->
+                <!--end::Line-->
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <!--begin::Aside-->
+
+        <!--begin::Content-->
+        <!-- <div class="d-flex flex-row-fluid flex-center bg-body rounded">
+          <form class="py-20 w-100 w-xl-700px px-9" noValidate id="kt_create_account_form">
+            <div class="current">
+              <ng-container *ngIf="step === 1">
+                <app-step1 class="w-100" [updateParentModel]="updateAccount"
+                  [defaultValues]="account$.value"></app-step1>
+              </ng-container>
+
+              <ng-container *ngIf="currentStep$.value === 2">
+                <app-step2 class="w-100" [updateParentModel]="updateAccount"
+                  [defaultValues]="account$.value"></app-step2>
+              </ng-container>
+
+              <ng-container *ngIf="currentStep$.value === 3">
+                <app-step3 class="w-100" [updateParentModel]="updateAccount"
+                  [defaultValues]="account$.value"></app-step3>
+              </ng-container>
+
+
+            </div>
+
+          
+          </form>
+        </div> -->
+        <!--end::Content-->
+      </div>
+
+    </div>
+    <div class="w-100 card">
+      <!-- <div class="stepper stepper-links d-flex flex-column pt-15" id="kt_create_account_stepper">
+        <div class="stepper-nav mb-5">
+          <div class="stepper-item" [ngClass]="{
+          current: step === 1,
+          completed:  step > 1
+        }">
+            <h3 class="stepper-title">Project Info</h3>
+          </div>
+
+          <div class="stepper-item" [ngClass]="{
+          current: step === 2,
+          completed: step > 1
+        }">
+            <h3 class="stepper-title">Project Details</h3>
+          </div>
+
+          <div class="stepper-item" [ngClass]="{
+          current: step === 3,
+          completed:step > 3
+        }">
+            <h3 class="stepper-title">Project Description</h3>
+          </div>
+        </div>
+      </div> -->
+      <div class="mw-600px w-100 py-15 px-md-0 px-3 mx-auto">
+        <div class=" border-0  ">
+          <h2 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bolder text-dark">{{step ===1 ? 'Project Info' : step ===2 ? ' Project Detail'
+              : 'Project Description' }}</span>
+            <!-- <span class="text-muted mt-1 fw-bold fs-7">
+          Details</span> -->
+          </h2>
+        </div>
+        <form class="w-100 py-5 mw-600px mx-auto" [formGroup]="addDataForm"
+          (ngSubmit)="saveChanges(!isEditMode ? 'Save' : 'Update')">
+
+          <div class="bg-white w-100">
+
+            <!-- Step 1 -->
+            <div *ngIf="step === 1">
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Email</label>
+                <input (input)="checkInputs()" formControlName="email" type="email"
+                  class="form-control form-control-lg form-control-solid" placeholder="email" />
+                <div *ngIf="
+                addDataForm.get('email')?.hasError('required') &&
+                addDataForm.get('email')?.touched
+              " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+                <div *ngIf="
+            addDataForm.get('email')?.hasError('email') &&
+            addDataForm.get('email')?.touched
+          " class="fv-plugins-message-container invalid-feedback">
+                  Invalid Email
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Date of submission</label>
+
+                <input formControlName="date" type="date" class="form-control form-control-lg form-control-solid"
+                  placeholder="date" />
+                <div *ngIf="
+                addDataForm.get('date')?.hasError('required') &&
+                addDataForm.get('date')?.touched
+              " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required"> Time of submission</label>
+
+                <input (change)="myTime()" formControlName="time" type="time"
+                  class="form-control form-control-lg form-control-solid" placeholder="time" />
+                <div *ngIf="
+                addDataForm.get('date')?.hasError('required') &&
+                addDataForm.get('date')?.touched
+              " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Project Title:</label>
+                <input (input)="checkInputs()" formControlName="project_title" type="text"
+                  class="form-control form-control-lg form-control-solid" placeholder="Project Title" />
+                <div *ngIf="
+                  addDataForm.get('project_title')?.hasError('required') &&
+                  addDataForm.get('project_title')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">URL:</label>
+                <input (input)="checkInputs()" formControlName="url" type="text"
+                  class="form-control form-control-lg form-control-solid" placeholder="url" />
+                <div *ngIf="
+                  addDataForm.get('url')?.hasError('required') &&
+                  addDataForm.get('url')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Proposals Count:</label>
+                <input (input)="checkInputs()" formControlName="proposals_count" type="number"
+                  class="form-control form-control-lg form-control-solid" placeholder="proposals_count" />
+                <div *ngIf="
+                  addDataForm.get('proposals_count')?.hasError('required') &&
+                  addDataForm.get('proposals_count')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+
+
+              <!-- Add more form controls for Step 1 as needed -->
+            </div>
+
+            <!-- Step 2 -->
+            <div *ngIf="step === 2">
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Response:</label>
+                <input (input)="checkInputs()" formControlName="response" type="text"
+                  class="form-control form-control-lg form-control-solid" placeholder="response" />
+                <div *ngIf="
+                  addDataForm.get('response')?.hasError('required') &&
+                  addDataForm.get('response')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Hired:</label>
+                <select (change)="checkInputs()" formControlName="fixed" formControlName="hired" type="text"
+                  class="form-select form-select-lg form-select-solid" placeholder="hired">
+                  <option value="" disabled selected>Select</option>
+
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+                <div *ngIf="
+                  addDataForm.get('hired')?.hasError('required') &&
+                  addDataForm.get('hired')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Account:</label>
+                <input (input)="checkInputs()" formControlName="account" type="text"
+                  class="form-control form-control-lg form-control-solid" placeholder="account" />
+                <div *ngIf="
+                  addDataForm.get('account')?.hasError('required') &&
+                  addDataForm.get('account')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Submitted By:</label>
+                <input (input)="checkInputs()" appWordCountValidator="50" formControlName="submitted_by" type="text"
+                  class="form-control form-control-lg form-control-solid" placeholder="submitted_by" />
+                <div *ngIf="
+                  addDataForm.get('submitted_by')?.hasError('required') &&
+                  addDataForm.get('submitted_by')?.touched 
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+                <div *ngIf="addDataForm.get('submitted_by').value?.length > 50"
+                  class="fv-plugins-message-container invalid-feedback">
+                  Input should be no more than 50 characters
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Verified:</label>
+                <select (change)="checkInputs()" formControlName="verified" type="text"
+                  class="form-select form-select-lg form-select-solid" placeholder="verified">
+                  <option value="" disabled selected>Select</option>
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+                <div *ngIf="
+                  addDataForm.get('verified')?.hasError('required') &&
+                  addDataForm.get('verified')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+
+
+              <!-- Add more form controls for Step 2 as needed -->
+            </div>
+            <div *ngIf="step === 3">
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Project Description:</label>
+                <!-- <input formControlName="project_description" type="text"
+              class="form-control form-control-lg form-control-solid" placeholder="project_description" /> -->
+                <ckeditor (change)="checkInputs()" [editor]="Editor" [config]="customConfig" name="project_description"
+                  formControlName="project_description" id="project_description" ngDefaultControl></ckeditor>
+                <div *ngIf="
+                  addDataForm.get('project_description')?.hasError('required') &&
+                  addDataForm.get('project_description')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Skills Required:</label>
+                <input (input)="checkInputs()" formControlName="skills_required" type="text"
+                  class="form-control form-control-lg form-control-solid" placeholder="skills_required" />
+                <div *ngIf="
+                  addDataForm.get('skills_required')?.hasError('required') &&
+                  addDataForm.get('skills_required')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Submitted Bid Description:</label>
+                <!-- <input formControlName="submitted_bid_description" type="text"
+              class="form-control form-control-lg form-control-solid" placeholder="submitted_bid_description" /> -->
+                <ckeditor (change)="checkInputs()" [editor]="Editor" [config]="customConfig"
+                  name="submitted_bid_description" formControlName="submitted_bid_description"
+                  id="submitted_bid_description" ngDefaultControl>
+                </ckeditor>
+                <div *ngIf="
+                  addDataForm.get('submitted_bid_description')?.hasError('required') &&
+                  addDataForm.get('submitted_bid_description')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Price:</label>
+                <input (input)="checkInputs()" formControlName="price" type="number"
+                  class="form-control form-control-lg form-control-solid" placeholder="price" />
+                <div *ngIf="
+                  addDataForm.get('price')?.hasError('required') &&
+                  addDataForm.get('price')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Fixed:</label>
+                <select (change)="checkInputs()" formControlName="fixed" formControlName="fixed" type="text"
+                  class="form-select form-select-lg form-select-solid" placeholder="fixed">
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+                <div *ngIf="
+                  addDataForm.get('fixed')?.hasError('required') &&
+                  addDataForm.get('fixed')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Remarks:</label>
+                <input (input)="checkInputs()" formControlName="remarks" type="text"
+                  class="form-control form-control-lg form-control-solid" placeholder="remarks" />
+                <div *ngIf="
+                  addDataForm.get('remarks')?.hasError('required') &&
+                  addDataForm.get('remarks')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+              <div class="mb-10 fv-row">
+                <label class="form-label mb-3 required">Total Connects Count:</label>
+                <input (input)="checkInputs()" formControlName="total_connects_count" type="number"
+                  class="form-control form-control-lg form-control-solid" placeholder="total_connects_count" />
+                <div *ngIf="
+                  addDataForm.get('total_connects_count')?.hasError('required') &&
+                  addDataForm.get('total_connects_count')?.touched
+                " class="fv-plugins-message-container invalid-feedback">
+                  This field is required
+                </div>
+              </div>
+
+
+
+              <!-- Add more form controls for Step 2 as needed -->
+            </div>
+            <!-- Include form controls for steps 3 to 7 in a similar manner -->
+            <ng-container *ngIf="isFormError !== ''">
+              <div class="my-lg-15 alert alert-danger">
+                <div class="alert-text font-weight-bold">
+                  {{isFormError }}
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="isFormSuccess !== ''">
+              <div class="my-lg-15 alert alert-success">
+                <div class="alert-text font-weight-bold">
+                  {{isFormSuccess }}
+
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Navigation buttons for previous and next steps -->
+            <button (click)="previousStep()" *ngIf="step != 1 " type="button" class="btn btn-lg btn-light-primary me-3">
+              <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr063.svg'"
+                class="svg-icon svg-icon-4 me-1"></span>
+              Previous
+            </button>
+            <button (click)="nextStep()" *ngIf="step != 3" type="button" class="btn btn-lg btn-light-primary me-3">
+              Next
+              <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr064.svg'"
+                class="svg-icon svg-icon-4 me-1"></span>
+            </button>
+
+            <button (click)="saveChanges(!isEditMode ? 'Save' : 'Update')" *ngIf="step === 3" type="button"
+              class="btn btn-lg btn-light-primary me-3">
+              {{ !isEditMode ? 'Save' : 'Update' }}
+            </button>
+
+            <button (click)="cancelStep()" type="button" class="btn btn-lg btn-light-primary me-3">
+              Cancel
+            </button>
+            <!-- <button type="button" (click)="previousStep()" *ngIf="step != 1"
+          class="btn btn-primary me-2 my-2">Previous</button> -->
+            <!-- <button type="button" (click)="nextStep()" *ngIf="step != 3" class="btn btn-primary me-2 my-2">Next</button> -->
+
+            <!-- Save and Cancel buttons -->
+            <!-- <button type="submit" (click)="saveChanges()" *ngIf="step == 3" class="btn me-2 btn-primary my-2">Save</button> -->
+            <!-- <button type="button" (click)="cancelStep()" class="btn btn-primary me-2 my-2">Cancel</button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div id="kt_toolbar_container" [ngClass]="toolbarContainerCssClasses" class="d-flex flex-stack flex-wrap">
+  <app-page-title #ktPageTitle class="page-title d-flex" [ngClass]="pageTitleCssClasses"></app-page-title>
+
+  <!-- begin::Actions  -->
+  <div class="d-flex align-items-center py-1" *ngIf="user?.user?.id && currentRoute == 'dashboard'">
+    <!-- begin::Wrapper  -->
+    <div class="me-4">
+      <!-- begin::Menu  -->
+
+      <!-- Example single danger button -->
+
+      <div ngbDropdown class="btn-group" #dropdown="ngbDropdown">
+        <button class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-primary fw-bolder"
+          data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end"
+          ngbDropdownToggle>
+          <span [inlineSVG]="'./assets/media/icons/duotune/general/gen031.svg'"
+            class="svg-icon svg-icon-5 svg-icon-gray-500 me-1"></span>
+          <span class="text-capitalize" *ngIf="filters.item">{{filterItem + ' ' + filterOrder}}</span>
+          <span *ngIf="!filters.item">Filter</span>
+
+        </button>
+
+        <div ngbDropdownMenu aria-labelledby="dropdown" class="dropdown-menu p-3">
+          <div class="form-group mb-2">
+            <select class="form-select" name="" id="" [(ngModel)]="filterItem">
+              <option value="" disabled>Select Item</option>
+              <option [value]="item.key" *ngFor="let item of filterItems">{{item.label}}</option>
+            </select>
+          </div>
+          <div class="form-group mb-2">
+            <select class="form-select" name="" id="" [(ngModel)]="filterOrder">
+              <option value="" disabled>Select Order</option>
+              <option [value]="item" *ngFor="let item of filterOrders">{{item}}</option>
+            </select>
+          </div>
+
+          <div class="d-flex">
+            <button class="btn btn-outline-primary dropdown-item  me-2 "
+              [disabled]="filterOrder == '' || filterItem == ''"
+              (click)="filterItem = '';filterOrder = ''; applyFiters()">Cancel</button>
+            <button class="btn btn-primary  dropdown-item" [disabled]="filterOrder == '' || filterItem == ''"
+              (click)="applyFiters()">Apply</button>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- end::Menu  -->
+    </div>
+    <!-- end::Wrapper  -->
+
+    <!-- begin::Button  -->
+    <a class="btn btn-custom btn-active-white btn-color-white btn-active-color-primary" data-bs-toggle="modal"
+      data-bs-target="#kt_modal_create_app" id="kt_toolbar_primary_button" (click)="showForm()">
+      Create
+    </a>
+
+
+
+
+
+
+
+
+
+
+    <!-- end::Button  -->
+  </div>
+  <!-- end::Actions  -->
+</div>
