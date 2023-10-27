@@ -102,8 +102,8 @@ export class TablesWidget10Component implements OnInit {
     });
     this.dataService.filter.subscribe((res) => {
       this.order = res.item;
-      this.orderBy=  res.order;
-      this.getData()
+      this.orderBy = res.order;
+      this.getData();
     });
   }
   formatLargeInteger(value: number) {
@@ -378,7 +378,9 @@ export class TablesWidget10Component implements OnInit {
       this.dataService.getstats().subscribe(
         (data: any) => {
           // Handle the API response data here
-          this.chartMonths = data.data.items.map((value: any) => value.month);
+          this.chartMonths = data.data.items.map(
+            (value: any) => value.month + ' ' + moment().format('YYYY')
+          );
           this.totalBids = data.data.totalBids;
           console.log('this.chartMonths', this.chartMonths);
           this.chartData = data.data.items.map((value: any) => value.count);
@@ -393,7 +395,9 @@ export class TablesWidget10Component implements OnInit {
       const user_id = localStorage.getItem('user_id');
       this.dataService.getstats(user_id).subscribe(
         (data: any) => {
-          this.chartMonths = data.data.items.map((value: any) => value.month);
+          this.chartMonths = data.data.items.map(
+            (value: any) => value.month + ' ' + moment().format('YYYY')
+          );
           this.chartData = data.data.items.map((value: any) => value.count);
           this.totalBids = data.data.totalBids;
           this.cdr.detectChanges();
@@ -455,9 +459,6 @@ export class TablesWidget10Component implements OnInit {
 
     this.user = this.authService.getAuthFromLocalStorage();
 
-
-
-
     if (this.user) {
       this.getData();
       this.getGraphData();
@@ -488,9 +489,9 @@ export class TablesWidget10Component implements OnInit {
       // Handle the case where no value is found in localStorage
       console.log('No selected date found in localStorage');
     }
-    
-    this.dataService.addForm.next(false)
-    this.cdr.detectChanges()
+
+    this.dataService.addForm.next(false);
+    this.cdr.detectChanges();
   }
   totalItems = 0;
   totalPages = 0;
@@ -528,12 +529,16 @@ export class TablesWidget10Component implements OnInit {
     this.isdataLoading = true;
     this.route.queryParams.subscribe((query: any) => {
       let { page, perPage } = query;
-      let queryParams:any = {
+      let queryParams: any = {
         perPage: perPage || this.perPage, // Use the route query parameter if available, or fallback to the default
         page: page || this.currentPage, // Use the route query parameter if available, or use the current page
       };
-      if(this.order) {
-        queryParams = {...queryParams, order:this.order, orderBy:this.orderBy}
+      if (this.order) {
+        queryParams = {
+          ...queryParams,
+          order: this.order,
+          orderBy: this.orderBy,
+        };
       }
       this.perPage = queryParams.perPage;
       this.currentPage = queryParams.page;

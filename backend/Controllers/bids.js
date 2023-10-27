@@ -102,7 +102,6 @@ const getBidsByUserId = (req, res) => {
   const perPage = parseInt(req.query.perPage) || 5;
   const page = parseInt(req.query.page) || 1; // Get the page number from the request, default to page 1 if not provided.
   const offset = (page - 1) * perPage; // Calculate the offset for the SQL query.
-  const totalItems = countResult[0].total;
 
   const order = req.query.order;
   const orderBy = req.query.orderBy;

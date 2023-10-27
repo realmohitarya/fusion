@@ -44,8 +44,8 @@
     <label class="form-label fw-bolder text-dark fs-6">Fullname</label>
     <input class="form-control form-control-lg form-control-solid" type="text" name="fullname"
       formControlName="fullname" placeholder="Fullname" autocomplete="off" [ngClass]="{
-        'is-invalid': registrationForm.controls['fullname'].invalid,
-        'is-valid': registrationForm.controls['fullname'].valid
+        'is-invalid': registrationForm.controls['fullname'].invalid && registrationForm.controls['fullname'].touched,
+        'is-valid': registrationForm.controls['fullname'].valid && registrationForm.controls['fullname'].touched
       }" />
     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
         validation: 'required',
@@ -70,8 +70,8 @@
     <label class="form-label fw-bolder text-dark fs-6">Email</label>
     <input class="form-control form-control-lg form-control-solid" type="email" placeholder="Email" name="email"
       formControlName="email" autocomplete="off" [ngClass]="{
-        'is-invalid': registrationForm.controls['email'].invalid,
-        'is-valid': registrationForm.controls['email'].valid
+        'is-invalid': registrationForm.controls['email'].invalid && registrationForm.controls['email'].touched,
+        'is-valid': registrationForm.controls['email'].valid  && registrationForm.controls['email'].touched
       }" />
     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
         validation: 'required',
@@ -101,8 +101,8 @@
     <label class="form-label fw-bolder text-dark fs-6">Password</label>
     <input class="form-control form-control-lg form-control-solid" type="password" placeholder="Password"
       name="password" formControlName="password" autocomplete="off" [ngClass]="{
-        'is-invalid': registrationForm.controls['password'].invalid,
-        'is-valid': registrationForm.controls['password'].valid
+        'is-invalid': registrationForm.controls['password'].invalid && registrationForm.controls['password'].touched,
+        'is-valid': registrationForm.controls['password'].valid && registrationForm.controls['password'].touched
       }" />
     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
         validation: 'required',
@@ -127,8 +127,8 @@
     <label class="form-label fw-bolder text-dark fs-6">Confirm Password</label>
     <input class="form-control form-control-lg form-control-solid" type="password" placeholder="Confirm password"
       name="cPassword" autocomplete="off" formControlName="cPassword" [ngClass]="{
-        'is-invalid': registrationForm.controls['cPassword'].invalid,
-        'is-valid': registrationForm.controls['cPassword'].valid
+        'is-invalid': registrationForm.controls['cPassword'].invalid && registrationForm.controls['cPassword'].touched,
+        'is-valid': registrationForm.controls['cPassword'].valid && registrationForm.controls['cPassword'].touched
       }" />
     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
         validation: 'required',

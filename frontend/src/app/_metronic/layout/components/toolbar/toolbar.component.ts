@@ -29,9 +29,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   selectedItem: string = '';
   filterItems: any[] = [
     { label: 'Date', key: 'date' },
-    { label: 'Hired', key: 'hired' },
-    { label: 'Fixed', key: 'fixed' },
-    { label: 'Verified', key: 'verified' },
+    // { label: 'Hired', key: 'hired' },
+    // { label: 'Fixed', key: 'fixed' },
+    // { label: 'Verified', key: 'verified' },
     { label: 'Total Connects', key: 'total_connects_count' },
     { label: 'Price', key: 'price' },
   ];

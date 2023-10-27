@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 })
 export class BidOverviewComponent {
   sharedData: any;
+  SharePath: any = '';
 
   constructor(
     private dataSharingService: DataSharingService,
@@ -32,10 +33,22 @@ export class BidOverviewComponent {
       this.dataservice.getBidById(id).subscribe((data) => {
         console.log('data', data);
         this.sharedData = data;
-
+        this.getPath();
         this.cdr.detectChanges();
       });
     });
+  }
+
+  getPath() {
+    const fullAbsolutePath = window.location.href;
+    this.SharePath =
+      fullAbsolutePath.split('/')[0] +
+      '//' +
+      fullAbsolutePath.split('/')[2] +
+      '/' +
+      'sharebid' +
+      '/' +
+      fullAbsolutePath.split('/')[4];
   }
 
   formatTime(time: any) {
