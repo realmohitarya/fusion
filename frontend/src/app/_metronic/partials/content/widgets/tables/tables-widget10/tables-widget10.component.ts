@@ -42,7 +42,11 @@ export class TablesWidget10Component implements OnInit {
   isdataLoading: Boolean = false;
   step = 1;
   buttonAction = '';
+  selectedYear: any = new Date().getFullYear().toString();
+
   field1: string = '';
+  minDate = '1990-01-01';
+    maxDate = '2023-12-31';
 
   field2: string = '';
   items: any[] = [];
@@ -140,6 +144,8 @@ export class TablesWidget10Component implements OnInit {
   }
   cancelStep() {
     // this.showStepper = !this.showStepper;
+    this.dataService.showFilter.next(true);
+
     this.isEditMode = false;
     this.showForm = false;
     this.addDataForm.reset();
@@ -186,6 +192,8 @@ export class TablesWidget10Component implements OnInit {
     }
   }
   editData(item: any, index: number) {
+    this.dataService.showFilter.next(false);
+
     this.initialFormValues = item;
 
     if (item) {
@@ -335,8 +343,6 @@ export class TablesWidget10Component implements OnInit {
             this.isUpdated = false;
             this.cancelStep();
             this.getData();
-            this.chartData = [];
-            this.chartMonths = [];
             this.getGraphData();
             this.cdr.detectChanges();
           }, 3000);
@@ -371,45 +377,6 @@ export class TablesWidget10Component implements OnInit {
     );
   }
 
-  getGraphData() {
-    const is_admin = localStorage.getItem('is_admin');
-    console.log('isa_admin', typeof is_admin);
-    if (is_admin === '1') {
-      this.dataService.getstats().subscribe(
-        (data: any) => {
-          // Handle the API response data here
-          this.chartMonths = data.data.items.map(
-            (value: any) => value.month + ' ' + moment().format('YYYY')
-          );
-          this.totalBids = data.data.totalBids;
-          console.log('this.chartMonths', this.chartMonths);
-          this.chartData = data.data.items.map((value: any) => value.count);
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          // Handle API request error here
-          console.error('API Error:', error);
-        }
-      );
-    } else {
-      const user_id = localStorage.getItem('user_id');
-      this.dataService.getstats(user_id).subscribe(
-        (data: any) => {
-          this.chartMonths = data.data.items.map(
-            (value: any) => value.month + ' ' + moment().format('YYYY')
-          );
-          this.chartData = data.data.items.map((value: any) => value.count);
-          this.totalBids = data.data.totalBids;
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          // Handle API request error here
-          console.error('API Error:', error);
-        }
-      );
-    }
-  }
-
   deleteItem(id: any) {
     if (confirm('Are you sure you want to delete this item?')) {
       // Send a DELETE request to delete the item
@@ -435,6 +402,8 @@ export class TablesWidget10Component implements OnInit {
     this.router.navigate(['/bid-overview/' + id]);
   }
   ngOnInit(): void {
+    // const testYear = this.dataService.selectedYear;
+
     this.addDataForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       id: [''],
@@ -458,7 +427,6 @@ export class TablesWidget10Component implements OnInit {
     });
 
     this.user = this.authService.getAuthFromLocalStorage();
-
     if (this.user) {
       this.getData();
       this.getGraphData();
@@ -491,12 +459,73 @@ export class TablesWidget10Component implements OnInit {
     }
 
     this.dataService.addForm.next(false);
+    this.getGraphData();
+
     this.cdr.detectChanges();
   }
   totalItems = 0;
   totalPages = 0;
   currentPage = 1;
   perPage = 10;
+
+  onSelectedYearChange(year: any) {
+    console.log('working from table', year);
+    this.selectedYear = year;
+
+    console.log('inside', this.selectedYear);
+    this.getGraphData();
+    this.cdr.detectChanges();
+  }
+
+  getGraphData() {
+    const is_admin = localStorage.getItem('is_admin');
+    console.log('Selected Year from graph function:', this.selectedYear);
+    this.chartData = [];
+    this.chartMonths = [];
+
+    if (this.selectedYear == null) {
+      this.selectedYear = new Date().getFullYear();
+    }
+
+    console.log('After assigning selectedYear:', this.selectedYear);
+
+    if (is_admin === '1') {
+      this.dataService.getstats(undefined, this.selectedYear).subscribe(
+        (data: any) => {
+          // Handle the API response data here
+          this.chartMonths = data.data.items.map(
+            (value: any) => value.month + ' ' + this.selectedYear
+          );
+          console.log('working inside:', this.selectedYear);
+
+          this.totalBids = data.data.totalBids;
+          console.log('this.chartMonths', this.chartMonths);
+          this.chartData = data.data.items.map((value: any) => value.count);
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          // Handle API request error here
+          console.error('API Error:', error);
+        }
+      );
+    } else {
+      const user_id = localStorage.getItem('user_id');
+      this.dataService.getstats(user_id, this.selectedYear).subscribe(
+        (data: any) => {
+          this.chartMonths = data.data.items.map(
+            (value: any) => value.month + ' ' + moment().format('YYYY')
+          );
+          this.chartData = data.data.items.map((value: any) => value.count);
+          this.totalBids = data.data.totalBids;
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          // Handle API request error here
+          console.error('API Error:', error);
+        }
+      );
+    }
+  }
 
   previousPage() {
     if (this.currentPage == 1) {

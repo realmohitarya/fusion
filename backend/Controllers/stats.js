@@ -7,7 +7,7 @@ const db = require("../connection");
 
 const getStats = (req,res) => {
   // Continue with your database query to filter by the month
-  const year = req.body.year || moment().format("YYYY");
+  const year = req.query.year || moment().format("YYYY");
   db.query(
     `
       SELECT
@@ -73,7 +73,7 @@ const getStatsbyUserId = (req, res) => {
   const { id } = req.params;
   console.log("id", id);
   // Continue with your database query to filter by the month
-  const year = req.body.year || moment().format("YYYY");
+  const year = req.query.year || moment().format("YYYY");
   db.query(
     `
       SELECT

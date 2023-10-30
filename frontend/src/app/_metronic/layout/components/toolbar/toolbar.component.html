@@ -9,7 +9,7 @@
 
       <!-- Example single danger button -->
 
-      <div ngbDropdown class="btn-group" #dropdown="ngbDropdown">
+      <div ngbDropdown class="btn-group" #dropdown="ngbDropdown" *ngIf="showFilter">
         <button class="btn btn-custom btn-active-white btn-flex btn-color-white btn-active-color-primary fw-bolder"
           data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end"
           ngbDropdownToggle>

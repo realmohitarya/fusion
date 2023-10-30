@@ -25,6 +25,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   toolbarContainerCssClasses: string = '';
   pageTitleCssClasses: string = '';
   user: any;
+  showFilter: boolean = true;
   currentRoute = '';
   selectedItem: string = '';
   filterItems: any[] = [
@@ -63,11 +64,18 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
       const splitPathname = currentPathname.split('/');
       // const urlSegments = splitPathname.split('?')[0];
 
-      this.currentRoute = splitPathname[1];
+      this.currentRoute = splitPathname[1].split('?')[0];
       this.pageInfo.setTitle(this.currentRoute);
       console.log('currentRoute ', this.currentRoute);
       this.cdr.detectChanges();
     });
+
+    this.dataService.showFilter.subscribe((res: any) => {
+      console.log('>>>', res);
+      this.showFilter = res;
+      this.cdr.detectChanges();
+    });
+    this.cdr.detectChanges();
   }
 
   onItemSelected(item: string) {
@@ -75,6 +83,8 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   }
   showForm() {
     this.dataService.addForm.next(true);
+    this.dataService.showFilter.next(false);
+    this.cdr.detectChanges();
   }
 
   applyFiters() {

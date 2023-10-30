@@ -9,11 +9,19 @@
 
 
   <div class="d-flex flex-stack flex-wrap flex-grow-1 px-9 pt-9 pb-3">
-    <div class="me-2">
-      <span class="fw-bolder text-gray-800 d-block fs-3">Bids</span>
+    <div class="me-2 d-flex align-items-center">
+      <span class="fw-bolder text-gray-800 d-block fs-3 ">Bids</span>
+      <select id="yearDropdown" class="form-select mx-2" (change)="onYearSelect($event)">
 
+        <option *ngFor="let year of yearsList" [value]="year" [selected]="year == currentYear">{{ year }}
+        </option>
+
+        <!-- Add more years as needed -->
+      </select>
       <!-- <span class="text-gray-400 fw-bold">Oct 8 - Oct 26 2021</span> -->
     </div>
+
+
 
     <div class="fw-bolder fs-3" [ngClass]="'fs-3 text-' + chartColor">
       {{totalBids}}

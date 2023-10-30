@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { getCSSVariableValue } from '../../../../../kt/_utils';
+import { DataService } from 'src/app/modules/auth/services/data.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-mixed-widget11',
   templateUrl: './mixed-widget11.component.html',
@@ -10,16 +13,40 @@ export class MixedWidget11Component implements OnInit {
   @Input() chartMonths: any;
   @Input() chartData: any;
   @Input() totalBids: any;
-  chartOptions: any = {};
+  @Input() year: any;
 
-  constructor() {}
+  @Output() selectedYearChange = new EventEmitter<any>();
+
+  chartOptions: any = {};
+  // Inside your component class
+  yearsList: number[] = [];
+  currentYear: any = '';
+
+  // You can populate this array with the years you need, for example:
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.currentYear = this.year;
     this.chartOptions = this.getChartOptions(this.chartHeight, this.chartColor);
-  }
 
+    for (let year = 1990; year <= new Date().getFullYear(); year++) {
+      this.yearsList.push(year);
+    }
+
+    this.cdr.detectChanges();
+  }
+  onYearSelect(e: Event) {
+    const selectedYear = (e.target as HTMLSelectElement).value;
+    // this.dataService.selectedYear.next(selectedYear);
+    this.selectedYearChange.emit(selectedYear);
+    this.currentYear = selectedYear;
+    console.log('Selected Year:', this.currentYear);
+    this.cdr.detectChanges();
+  }
   getChartOptions(chartHeight: string, chartColor: string) {
     console.log('chartMonths', this.chartMonths);
+    this.cdr.detectChanges();
     const labelColor = getCSSVariableValue('--bs-gray-500');
     const borderColor = getCSSVariableValue('--bs-gray-200');
     const secondaryColor = getCSSVariableValue('--bs-gray-300');

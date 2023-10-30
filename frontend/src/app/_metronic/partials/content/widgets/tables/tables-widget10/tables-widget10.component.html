@@ -31,7 +31,8 @@
 
   <!-- begin::Col -->
   <div class="col-xl-12" *ngIf="chartData.length">
-    <app-mixed-widget11 class="card card-xl-stretch mb-xl-8" chartColor="primary" chartHeight="300px"
+    <app-mixed-widget11 class="card card-xl-stretch mb-xl-8" [year]="selectedYear"
+      (selectedYearChange)="onSelectedYearChange($event)" chartColor="primary" chartHeight="300px"
       [chartData]="chartData" [totalBids]="totalBids" [chartMonths]="chartMonths"></app-mixed-widget11>
   </div>
   <!-- end::Col -->
@@ -396,7 +397,7 @@
               <div class="mb-10 fv-row">
                 <label class="form-label mb-3 required">Date of submission</label>
 
-                <input formControlName="date" type="date" class="form-control form-control-lg form-control-solid"
+                <input formControlName="date" type="date" [min]="minDate" [max]="maxDate" class="form-control form-control-lg form-control-solid"
                   placeholder="date" />
                 <div *ngIf="
                 addDataForm.get('date')?.hasError('required') &&

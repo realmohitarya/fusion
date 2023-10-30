@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
@@ -7,6 +7,10 @@ import { environment } from 'src/environments/environment';
 })
 export class DataService {
   constructor(private http: HttpClient) {}
+  showFilter: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  selectedYear: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+  // selectedYear:any='';
 
   apiUrl: any = `${environment.api_url}/bids`;
   sharebid: any = `${environment.api_url}/sharebid`;
@@ -15,6 +19,9 @@ export class DataService {
   addForm: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   filter: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
+  ngOnInit() {
+    console.log('Selected Year in service:', this.selectedYear);
+  }
   getBids(user: any, queryParams: any) {
     const perPage = queryParams.perPage || 10;
     if (user?.user?.is_admin == 0) {
@@ -40,11 +47,13 @@ export class DataService {
     return this.http.get(`${this.sharebid}/${id}`);
   }
 
-  getstats(id: any = undefined) {
+  getstats(id: any = undefined, year: any) {
+    const params = new HttpParams().set('year', year.toString()); // Add the year as a query parameter
+    console.log('params', params);
     if (id) {
-      return this.http.get(`${this.stats}/${id}`);
+      return this.http.get(`${this.stats}/${id}`, { params: params });
     }
-    return this.http.get(`${this.stats}`);
+    return this.http.get(`${this.stats}`, { params: params });
   }
 
   addBid(payload: any) {
