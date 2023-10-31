@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const db = require("../connection");
 
-const getStats = (req,res) => {
+const getStats = (req, res) => {
   // Continue with your database query to filter by the month
   const year = req.query.year || moment().format("YYYY");
   db.query(
@@ -63,7 +63,7 @@ const getStats = (req,res) => {
           items: results,
           totalBids: totalBids, // Total count of bids for the specified year
         },
-        message: "Records fetched successfully for the specified year",
+        message: "Records fetched successfully for the specified year " + year,
       });
     }
   );
@@ -127,10 +127,10 @@ const getStatsbyUserId = (req, res) => {
           items: results,
           totalBids: totalBids,
         },
-        message: "Records fetched successfully for the specified month",
+        message: "Records fetched successfully for the specified year " + year,
       });
     }
   );
-}
+};
 
-module.exports = {getStats, getStatsbyUserId};
+module.exports = { getStats, getStatsbyUserId };

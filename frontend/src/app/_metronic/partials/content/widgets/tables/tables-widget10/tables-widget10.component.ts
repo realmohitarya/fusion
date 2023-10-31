@@ -46,7 +46,7 @@ export class TablesWidget10Component implements OnInit {
 
   field1: string = '';
   minDate = '1990-01-01';
-    maxDate = '2023-12-31';
+  maxDate = '2023-12-31';
 
   field2: string = '';
   items: any[] = [];
@@ -337,9 +337,8 @@ export class TablesWidget10Component implements OnInit {
           this.isFormSuccess = 'Bid Saved Successfully';
           this.formreset();
 
-          this.cdr.detectChanges();
           setTimeout(() => {
-            console.log('working add', this.isFormSuccess);
+            // console.log('working add', this.isFormSuccess);
             this.isUpdated = false;
             this.cancelStep();
             this.getData();
@@ -480,23 +479,27 @@ export class TablesWidget10Component implements OnInit {
   getGraphData() {
     const is_admin = localStorage.getItem('is_admin');
     console.log('Selected Year from graph function:', this.selectedYear);
+    const year = this.selectedYear;
     this.chartData = [];
     this.chartMonths = [];
+    console.log('year', year);
 
     if (this.selectedYear == null) {
       this.selectedYear = new Date().getFullYear();
     }
 
-    console.log('After assigning selectedYear:', this.selectedYear);
+    console.log('After assigning selectedYear:', year);
 
     if (is_admin === '1') {
       this.dataService.getstats(undefined, this.selectedYear).subscribe(
         (data: any) => {
           // Handle the API response data here
+          this.cdr.detectChanges();
+
           this.chartMonths = data.data.items.map(
-            (value: any) => value.month + ' ' + this.selectedYear
+            (value: any) => value.month + ' ' + year
           );
-          console.log('working inside:', this.selectedYear);
+          console.log('working inside:', year);
 
           this.totalBids = data.data.totalBids;
           console.log('this.chartMonths', this.chartMonths);
@@ -513,7 +516,7 @@ export class TablesWidget10Component implements OnInit {
       this.dataService.getstats(user_id, this.selectedYear).subscribe(
         (data: any) => {
           this.chartMonths = data.data.items.map(
-            (value: any) => value.month + ' ' + moment().format('YYYY')
+            (value: any) => value.month + ' ' + this.selectedYear
           );
           this.chartData = data.data.items.map((value: any) => value.count);
           this.totalBids = data.data.totalBids;

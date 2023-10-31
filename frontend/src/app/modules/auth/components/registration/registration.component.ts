@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
 import { UserModel } from '../../models/user.model';
 import { first } from 'rxjs/operators';
+import { AuthHTTPService } from '../../services/auth-http';
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +17,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   registrationForm: FormGroup;
   hasError: boolean;
   errMMsg = '';
-  isRegsisterSuccess: any;
+  isRegsisterSuccess: any = '';
   isLoading$: Observable<boolean>;
 
   // private fields
@@ -25,7 +26,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private authHttpService: AuthHTTPService
   ) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
@@ -97,26 +99,30 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     });
     const newUser = new UserModel();
     newUser.setUser(result);
-
+    this.isRegsisterSuccess = '';
+    this.errMMsg = '';
     let payload = {};
-    const registrationSubscr = this.authService
-      .registration(newUser)
-      .pipe(first())
-      .subscribe((user: any) => {
-        if (user.status == 400) {
-          this.errMMsg = user.error.message;
+    this.authService.isLoadingSubject.next(true);
+    const registrationSubscr = this.authHttpService
+      .createUser(newUser)
+      .subscribe(
+        (user: any) => {
+          console.log('user', user);
+          this.isRegsisterSuccess = user.message;
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 2000);
+        },
+        (error: any) => {
+          this.errMMsg = error.error.message;
           this.hasError = true;
-        } else {
-          if (user) {
-            this.isRegsisterSuccess = true;
-            setTimeout(() => {
-              this.router.navigate(['/']);
-            }, 2000);
-          }
-          // this.isRegsisterSuccess = false;
         }
+      )
+      .add(() => {
+        // This code will be executed regardless of success or error.
+        this.authService.isLoadingSubject.next(false);
       });
-    this.unsubscribe.push(registrationSubscr);
+    // this.unsubscribe.push(registrationSubscr);
   }
 
   ngOnDestroy() {

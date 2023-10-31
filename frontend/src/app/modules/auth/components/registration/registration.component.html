@@ -21,18 +21,17 @@
   </div>
 
   <!-- begin::Alert error-->
-  <ng-container *ngIf="hasError">
+  <ng-container *ngIf="errMMsg !== ''">
     <div class="mb-lg-15 alert alert-danger">
       <div class="alert-text font-weight-bold">
         {{errMMsg ? errMMsg : 'The registration details are incorrect'}}
       </div>
     </div>
   </ng-container>
-  <ng-container *ngIf="isRegsisterSuccess">
+  <ng-container *ngIf="isRegsisterSuccess !== ''">
     <div class="my-lg-15 alert alert-success">
       <div class="alert-text font-weight-bold">
-        {{isRegsisterSuccess? 'The registration is success':''}}
-
+        {{isRegsisterSuccess ? isRegsisterSuccess : 'The registration is success'}}
       </div>
     </div>
   </ng-container>
