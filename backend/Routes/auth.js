@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const route = Router();
-const bcrypt = require("bcrypt");
 
 const authController = require("../Controllers/auth");
 

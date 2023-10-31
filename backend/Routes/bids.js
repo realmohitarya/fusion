@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const route = Router();
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const bidController = require('../Controllers/bids')

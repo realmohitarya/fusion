@@ -1,11 +1,10 @@
 const express = require("express");
 const mysql = require("mysql2");
-const bcrypt = require("bcrypt");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const crypto = require("crypto");
 require("dotenv").config();
 const router = express.Router()
