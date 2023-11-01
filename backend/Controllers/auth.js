@@ -33,7 +33,7 @@ const adminRegister = (req, res) => {
               console.error("Error registering user: " + err);
               return res.status(500).json({ error: "Error registering user" });
             }
-            res.status(201).json({ message: "User registered successfully" });
+            res.status(200).json({ message: "User registered successfully" });
           }
         );
       }
@@ -104,7 +104,7 @@ const login = (req, res) => {
     }
 
     if (results.length === 0) {
-      res.status(401).json({ message: "Invalid email or password" });
+      res.status(400).json({ message: "Invalid email or password" });
       return;
     }
 
@@ -144,7 +144,7 @@ const login = (req, res) => {
       }
     } else {
       // Passwords don't match
-      res.status(401).json({ message: "Invalid email or password" });
+      res.status(400).json({ message: "Invalid email or password" });
     }
   });
 };

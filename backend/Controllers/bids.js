@@ -125,7 +125,7 @@ const getBidsByUserId = (req, res) => {
 
       // Fetch the user's is_admin information
       db.query(
-        "SELECT is_admin FROM users WHERE id = ?",
+        "SELECT * FROM users WHERE id = ?",
         [id],
         (err, userResult) => {
           if (err) {
@@ -134,7 +134,7 @@ const getBidsByUserId = (req, res) => {
             return;
           }
 
-          const is_admin = userResult[0].is_admin;
+          const is_admin = userResult[0]?.is_admin;
 
           db.query(query, [id, perPage, offset], (err, results) => {
             if (err) {
