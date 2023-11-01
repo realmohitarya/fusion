@@ -8,8 +8,7 @@ export const environment = {
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: false,
   apiUrl: 'api',
-  api_url: 'http://103.212.121.106:3000',
-
+  api_url: 'https://bidsapi.marvelons.com',
   appThemeName: 'Metronic',
   appPurchaseUrl: 'https://1.envato.market/EA4JP',
   appHTMLIntegration:
