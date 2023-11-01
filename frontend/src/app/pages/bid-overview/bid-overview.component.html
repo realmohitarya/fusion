@@ -104,7 +104,8 @@
                                     URL
                                 </a>
                                 <span class="text-muted fw-bold">
-                                    <a href={{sharedData?.url}} target="_blank" class="text-muted  fs-6 fw-bolder">
+                                    <a href={{sharedData?.url}} target="_blank"
+                                        class="text-muted text-hover-primary fs-6 fw-bolder">
                                         {{sharedData?.url}}</a></span>
                             </div>
                             <!-- end::Text -->
@@ -342,7 +343,8 @@
                             <div class="d-flex flex-column">
                                 <a class="text-dark  fs-6 fw-bolder">
                                     Total Connects Count </a>
-                                <span class="text-muted fw-bold">{{sharedData?.total_connects_count }}</span>
+                                <span class="text-muted fw-bold">{{formatLargeInteger(sharedData?.total_connects_count)
+                                    }}</span>
                             </div>
                             <!-- end::Text -->
                         </div>

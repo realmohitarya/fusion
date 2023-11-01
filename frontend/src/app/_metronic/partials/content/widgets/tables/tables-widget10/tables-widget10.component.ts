@@ -8,6 +8,7 @@ import { DataService } from 'src/app/modules/auth/services/data.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import moment from 'moment';
+import { PaginationInstance } from 'ngx-pagination';
 
 import { environment } from 'src/environments/environment';
 import { DataSharingService } from 'src/app/data-sharing.service';
@@ -56,6 +57,8 @@ export class TablesWidget10Component implements OnInit {
   orderBy: '';
   p: number = 1; // Current page for pagination
   itemsPerPage: number = 10; // Number of items per page
+  visiblePages: (number | string)[] = [];
+
   addDataForm: any;
   public customConfig = {
     toolbar: {
@@ -530,21 +533,64 @@ export class TablesWidget10Component implements OnInit {
     }
   }
 
-  previousPage() {
-    if (this.currentPage == 1) {
-      return;
+  updateVisiblePages() {
+    const maxVisiblePages = 5;
+    const maxPageNumbers = Math.min(maxVisiblePages, this.totalPages);
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages, startPage + maxPageNumbers - 1);
+
+    this.visiblePages = [];
+
+    for (let i = startPage; i <= endPage; i++) {
+      this.visiblePages.push(i);
     }
-    this.currentPage--;
-    this.navigateWithQueryParams();
+
+    if (startPage > 1) {
+      this.visiblePages.unshift('...'); // Use '...' to represent ellipsis for previous pages
+    }
+    if (endPage < this.totalPages) {
+      this.visiblePages.push('...'); // Use '...' to represent ellipsis for next pages
+    }
+  }
+
+  goToPage(page: number | string) {
+    if (typeof page === 'number') {
+      this.currentPage = page;
+      this.updateVisiblePages();
+      // Add logic to load data for the selected page
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateVisiblePages();
+      // Add logic to load data for the previous page
+    }
   }
 
   nextPage() {
-    if (this.currentPage == this.totalPages) {
-      return;
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateVisiblePages();
+      // Add logic to load data for the next page
     }
-    this.currentPage++;
-    this.navigateWithQueryParams();
   }
+  // previousPage() {
+  //   if (this.currentPage == 1) {
+  //     return;
+  //   }
+  //   this.currentPage--;
+  //   this.navigateWithQueryParams();
+  // }
+
+  // nextPage() {
+  //   if (this.currentPage == this.totalPages) {
+  //     return;
+  //   }
+  //   this.currentPage++;
+  //   this.navigateWithQueryParams();
+  // }
 
   navigateWithQueryParams() {
     this.router.navigate([], {

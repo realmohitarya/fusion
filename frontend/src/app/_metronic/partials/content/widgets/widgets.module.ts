@@ -77,6 +77,7 @@ import { TablesWidget13Component } from './tables/tables-widget13/tables-widget1
 import { TablesWidget14Component } from './tables/tables-widget14/tables-widget14.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     DropdownMenusModule,
     InlineSVGModule,
     NgApexchartsModule,
+    NgxPaginationModule,
     NgbDropdownModule,
     ReactiveFormsModule,
     CKEditorModule,

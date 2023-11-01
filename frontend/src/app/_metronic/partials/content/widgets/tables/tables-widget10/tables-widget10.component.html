@@ -95,7 +95,7 @@
                 <td class="text-dark fw-bold">{{ (currentPage - 1) * perPage + (i + 1) }} </td>
                 <!-- <td class="text-muted fw-bold" >{{ item.date }}</td> -->
                 <td class="text-muted fw-bold">{{ item.project_title }}</td>
-                <td class="text-muted fw-bold"><a href={{item.url}} target="_blank"
+                <td class="text-muted fw-bold "><a href={{item.url}} target="_blank"
                     class="text-muted text-hover-primary fs-6 fw-bolder">{{ item.url }}</a></td>
                 <td class="text-muted fw-bold">{{ formatLargeInteger(item.proposals_count) }}</td>
                 <!-- <td class="text-muted fw-bold" >{{ item.verified }}</td>
@@ -125,8 +125,8 @@
                     item.verified | titlecase}}
                   </span>
                 </td>
-                <td class="text-muted fw-bold">{{ item.total_connects_count }}</td>
-                <td class="text-muted fw-bold">{{ item.price }}</td>
+                <td class="text-muted fw-bold">{{ formatLargeInteger(item.total_connects_count) }}</td>
+                <td class="text-muted fw-bold">{{ formatLargeInteger(item.price) }}</td>
                 <td class="d-flex">
                   <button (click)="navigateToOverview(item.id)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm
                     me-1">
@@ -169,20 +169,31 @@
       </table>
       <!-- end::Table -->
     </div>
-    <div class="pb-10 pt-5 d-flex" *ngIf="totalItems > perPage">
-      <button [disabled]="currentPage == 1" type="button" class="btn btn-lg btn-light-primary me-3"
+    <div class="pb-10 pt-5 d-flex" *ngIf="totalPages > 1">
+      <button [disabled]="currentPage === 1" type="button" class="btn btn-lg btn-light-primary me-3"
         (click)="previousPage()">
         <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr063.svg'" class="svg-icon svg-icon-4 me-1"></span>
         Previous
       </button>
-      <!-- <button *ngIf="currentPage > 1" class="btn" (click)="previousPage()">Previous</button> -->
-      <button [disabled]="currentPage == totalPages" type="button" class="btn btn-lg btn-light-primary me-3"
+
+      <ng-container *ngFor="let page of visiblePages">
+        <button type="button" class="btn btn-lg btn-light-primary me-3" [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page === -1 ? '...' : page }}
+        </button>
+      </ng-container>
+
+      <button [disabled]="currentPage === totalPages" type="button" class="btn btn-lg btn-light-primary me-3"
         (click)="nextPage()">
         Next
         <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr064.svg'" class="svg-icon svg-icon-4 me-1"></span>
       </button>
-      <!-- <button *ngIf="currentPage < totalPages" class="btn" (click)="nextPage()">Next</button> -->
     </div>
+
+
+
+
+
   </div>
 
 
@@ -397,8 +408,8 @@
               <div class="mb-10 fv-row">
                 <label class="form-label mb-3 required">Date of submission</label>
 
-                <input formControlName="date" type="date" [min]="minDate" [max]="maxDate" class="form-control form-control-lg form-control-solid"
-                  placeholder="date" />
+                <input formControlName="date" type="date" [min]="minDate" [max]="maxDate"
+                  class="form-control form-control-lg form-control-solid" placeholder="date" />
                 <div *ngIf="
                 addDataForm.get('date')?.hasError('required') &&
                 addDataForm.get('date')?.touched
