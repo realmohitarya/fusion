@@ -15,8 +15,9 @@ export class MixedWidget11Component implements OnInit {
   @Input() totalBids: any;
   @Input() year: any;
 
-  @Output() selectedYearChange = new EventEmitter<any>();
 
+  @Output() selectedYearChange = new EventEmitter<any>();
+isGraphLoading :boolean= false;
   chartOptions: any = {};
   // Inside your component class
   yearsList: number[] = [];
@@ -37,6 +38,7 @@ export class MixedWidget11Component implements OnInit {
     this.cdr.detectChanges();
   }
   onYearSelect(e: Event) {
+    this.isGraphLoading = true
     const selectedYear = (e.target as HTMLSelectElement).value;
     // this.dataService.selectedYear.next(selectedYear);
     this.selectedYearChange.emit(selectedYear);

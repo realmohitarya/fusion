@@ -8,7 +8,6 @@ import { DataService } from 'src/app/modules/auth/services/data.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import moment from 'moment';
-import { PaginationInstance } from 'ngx-pagination';
 
 import { environment } from 'src/environments/environment';
 import { DataSharingService } from 'src/app/data-sharing.service';
@@ -42,6 +41,8 @@ export class TablesWidget10Component implements OnInit {
   editingData: any = [];
   isdataLoading: Boolean = false;
   step = 1;
+
+  isSmallScreen: boolean = false;
   buttonAction = '';
   selectedYear: any = new Date().getFullYear().toString();
 
@@ -57,8 +58,6 @@ export class TablesWidget10Component implements OnInit {
   orderBy: '';
   p: number = 1; // Current page for pagination
   itemsPerPage: number = 10; // Number of items per page
-  visiblePages: (number | string)[] = [];
-
   addDataForm: any;
   public customConfig = {
     toolbar: {
@@ -120,9 +119,6 @@ export class TablesWidget10Component implements OnInit {
   updateField(fieldName: string, event: any) {
     this.addDataForm.get(fieldName).setValue(event.target.value);
   }
-  testTime(time: any) {
-    return console.log('time', time);
-  }
   formreset() {
     this.addDataForm.reset();
     this.addDataForm.controls.verified.value = '';
@@ -178,9 +174,6 @@ export class TablesWidget10Component implements OnInit {
     this.selecteMyDate = selectedDate;
   }
   myTime() {
-    // console.log('Selected time: ' + this.addDataForm.get('time').value);
-    // localStorage.setItem('selectedTime', this.selecteMyTime);
-    // this.selecteMyTime = localStorage.getItem('selectedTime');
     console.log('selectedTime: ' + this.addDataForm.get('time').value);
     const selectedTime = this.addDataForm.get('time').value;
 
@@ -227,16 +220,6 @@ export class TablesWidget10Component implements OnInit {
       user_id: this.user.user.id,
       date: converted,
     });
-    // const utcDateString = item.date;
-
-    // Create a Date object from the UTC date string
-    // const utcDate = new Date(utcDateString);
-
-    // Get the local date and time
-    // const localDate = new Date(utcDate);
-
-    // The localDate object now holds the date and time in the local time zone.
-    // console.log('Local Date:', localDate);
 
     this.isEditMode = true;
     this.isFormError = '';
@@ -306,15 +289,6 @@ export class TablesWidget10Component implements OnInit {
             this.items[index] = response;
           }
 
-          // If it's a save action
-
-          // else if (action == 'Update') {
-          //   // If it's an update action
-          //   this.successMessage = 'Data updated successfully';
-          // }
-
-          // Automatically clear the success message after 2 seconds
-
           setTimeout(() => {
             this.isUpdated = false;
 
@@ -325,9 +299,6 @@ export class TablesWidget10Component implements OnInit {
             this.getGraphData();
             this.cdr.detectChanges();
           }, 3000);
-
-          // this.showStepper = !this.showStepper;
-          // item.isItemEditMode = false; // Exit edit mode
         },
         (error) => {
           console.error('Error updating item:', error);
@@ -469,13 +440,19 @@ export class TablesWidget10Component implements OnInit {
   totalPages = 0;
   currentPage = 1;
   perPage = 10;
+  isGraphLoading = false;
 
   onSelectedYearChange(year: any) {
+    this.isGraphLoading = true;
     console.log('working from table', year);
     this.selectedYear = year;
 
     console.log('inside', this.selectedYear);
     this.getGraphData();
+    this.cdr.detectChanges();
+  }
+
+  ngAfterViewChecked() {
     this.cdr.detectChanges();
   }
 
@@ -494,103 +471,55 @@ export class TablesWidget10Component implements OnInit {
     console.log('After assigning selectedYear:', year);
 
     if (is_admin === '1') {
-      this.dataService.getstats(undefined, this.selectedYear).subscribe(
-        (data: any) => {
-          // Handle the API response data here
-          this.cdr.detectChanges();
+      this.dataService
+        .getstats(undefined, this.selectedYear)
+        .subscribe(
+          (data: any) => {
+            // Handle the API response data here
+            this.cdr.detectChanges();
 
-          this.chartMonths = data.data.items.map(
-            (value: any) => value.month + ' ' + year
-          );
-          console.log('working inside:', year);
+            this.chartMonths = data.data.items.map(
+              (value: any) => value.month + ' ' + year
+            );
+            console.log('working inside:', year);
 
-          this.totalBids = data.data.totalBids;
-          console.log('this.chartMonths', this.chartMonths);
-          this.chartData = data.data.items.map((value: any) => value.count);
+            this.totalBids = data.data.totalBids;
+            console.log('this.chartMonths', this.chartMonths);
+            this.chartData = data.data.items.map((value: any) => value.count);
+            this.cdr.detectChanges();
+          },
+          (error) => {
+            // Handle API request error here
+            console.error('API Error:', error);
+          }
+        )
+        .add(() => {
+          this.isGraphLoading = false;
           this.cdr.detectChanges();
-        },
-        (error) => {
-          // Handle API request error here
-          console.error('API Error:', error);
-        }
-      );
+        });
     } else {
       const user_id = localStorage.getItem('user_id');
-      this.dataService.getstats(user_id, this.selectedYear).subscribe(
-        (data: any) => {
-          this.chartMonths = data.data.items.map(
-            (value: any) => value.month + ' ' + this.selectedYear
-          );
-          this.chartData = data.data.items.map((value: any) => value.count);
-          this.totalBids = data.data.totalBids;
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          // Handle API request error here
-          console.error('API Error:', error);
-        }
-      );
+      this.dataService
+        .getstats(user_id, this.selectedYear)
+        .subscribe(
+          (data: any) => {
+            this.chartMonths = data.data.items.map(
+              (value: any) => value.month + ' ' + this.selectedYear
+            );
+            this.chartData = data.data.items.map((value: any) => value.count);
+            this.totalBids = data.data.totalBids;
+            this.cdr.detectChanges();
+          },
+          (error) => {
+            // Handle API request error here
+            console.error('API Error:', error);
+          }
+        )
+        .add(() => {
+          this.isGraphLoading = false;
+        });
     }
   }
-
-  updateVisiblePages() {
-    const maxVisiblePages = 5;
-    const maxPageNumbers = Math.min(maxVisiblePages, this.totalPages);
-    const startPage = Math.max(1, this.currentPage - 2);
-    const endPage = Math.min(this.totalPages, startPage + maxPageNumbers - 1);
-
-    this.visiblePages = [];
-
-    for (let i = startPage; i <= endPage; i++) {
-      this.visiblePages.push(i);
-    }
-
-    if (startPage > 1) {
-      this.visiblePages.unshift('...'); // Use '...' to represent ellipsis for previous pages
-    }
-    if (endPage < this.totalPages) {
-      this.visiblePages.push('...'); // Use '...' to represent ellipsis for next pages
-    }
-  }
-
-  goToPage(page: number | string) {
-    if (typeof page === 'number') {
-      this.currentPage = page;
-      this.updateVisiblePages();
-      // Add logic to load data for the selected page
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updateVisiblePages();
-      // Add logic to load data for the previous page
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updateVisiblePages();
-      // Add logic to load data for the next page
-    }
-  }
-  // previousPage() {
-  //   if (this.currentPage == 1) {
-  //     return;
-  //   }
-  //   this.currentPage--;
-  //   this.navigateWithQueryParams();
-  // }
-
-  // nextPage() {
-  //   if (this.currentPage == this.totalPages) {
-  //     return;
-  //   }
-  //   this.currentPage++;
-  //   this.navigateWithQueryParams();
-  // }
 
   navigateWithQueryParams() {
     this.router.navigate([], {
@@ -657,14 +586,6 @@ export class TablesWidget10Component implements OnInit {
       );
     });
   }
-  onKey(item: any) {
-    // item[index] = item.target.value;
-    console.log('updated date', item.target.value);
-  }
-  // onKey(item: any) {
-  //   // The item.date property has been updated with the user's input
-  //   console.log("updated date",item.target.value);
-  // }
 
   cancelEdit(i: any, index: number) {
     // Revert changes or simply exit edit mode

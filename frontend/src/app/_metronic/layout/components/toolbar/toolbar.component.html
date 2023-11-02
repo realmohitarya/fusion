@@ -15,7 +15,8 @@
           ngbDropdownToggle>
           <span [inlineSVG]="'./assets/media/icons/duotune/general/gen031.svg'"
             class="svg-icon svg-icon-5 svg-icon-gray-500 me-1"></span>
-          <span class="text-capitalize" *ngIf="filters.item">{{filterItem + ' ' + filterOrder}}</span>
+          <span class="text-capitalize" *ngIf="filters.item">
+            {{ getSelectedFilter()+ ' ' + filterOrder}}</span>
           <span *ngIf="!filters.item">Filter</span>
 
         </button>

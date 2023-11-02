@@ -32,7 +32,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     { label: 'Date', key: 'date' },
     // { label: 'Hired', key: 'hired' },
     // { label: 'Fixed', key: 'fixed' },
-    // { label: 'Verified', key: 'verified' },
+    { label: 'Proposals Count	', key: 'proposals_count' },
     { label: 'Total Connects', key: 'total_connects_count' },
     { label: 'Price', key: 'price' },
   ];
@@ -53,6 +53,12 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
     private pageInfo: PageInfoService
   ) {}
 
+  getSelectedFilter() {
+    if (this.filterItems.find((el) => el.key == this.filterItem)?.label) {
+      return this.filterItems.find((el) => el.key == this.filterItem)?.label;
+    }
+    return '';
+  }
   ngOnInit(): void {
     this.toolbarContainerCssClasses =
       this.layout.getStringCSSClasses('toolbarContainer');
