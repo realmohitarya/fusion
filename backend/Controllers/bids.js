@@ -236,7 +236,7 @@ const shareBid = (req, res) => {
   const id = req.params.id;
 
   // Query the database to retrieve the bid associated with the identifier
-  db.query("SELECT * FROM bids WHERE id = ?", [id], (err, result) => {
+  db.query(" SELECT bids.*, users.fullname AS fullname FROM bids LEFT JOIN users ON bids.user_id = users.id WHERE bids.id = ?", [id], (err, result) => {
     if (err) {
       console.error("Error retrieving bid: " + err);
       res.status(500).send("Error retrieving bid" + err);

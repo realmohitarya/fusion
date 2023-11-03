@@ -5,7 +5,6 @@ const db = require("../connection");
 const adminRegister = (req, res) => {
   const { username, email, password } = req.body;
 
-  // Check if the email already exists in the database
   db.query(
     "SELECT * FROM users WHERE email = ? AND is_admin = 1",
     [email],

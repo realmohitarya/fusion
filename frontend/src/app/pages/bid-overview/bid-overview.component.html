@@ -29,7 +29,24 @@
                             </div>
                             <!-- end::Text -->
                         </div>
-
+                        <div class="d-flex col-md-6 col-12 align-items-center">
+                            <!-- begin::Symbol -->
+                            <div class="symbol symbol-50px me-5">
+                                <span class="symbol-label bg-light-warning">
+                                    <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                                        class="svg-icon svg-icon-2x svg-icon-warning"></span>
+                                </span>
+                            </div>
+                            <!-- end::Symbol -->
+                            <!-- begin::Text -->
+                            <div class="d-flex flex-column">
+                                <a class="  fs-6 text-dark fw-bolder">
+                                    User
+                                </a>
+                                <span class="text-muted fw-bold">{{sharedData?.fullname}}</span>
+                            </div>
+                            <!-- end::Text -->
+                        </div>
                         <div class="d-flex col-md-6 col-12 align-items-center">
                             <!-- begin::Symbol -->
                             <div class="symbol symbol-50px me-5">
@@ -350,24 +367,7 @@
                         </div>
                         <!-- end::Item -->
                         <!-- begin::Item -->
-                        <div class="d-flex col-md-6 col-12 align-items-center">
-                            <!-- begin::Symbol -->
-                            <div class="symbol symbol-50px me-5">
-                                <span class="symbol-label bg-light-warning">
-                                    <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
-                                        class="svg-icon svg-icon-2x svg-icon-warning"></span>
-                                </span>
-                            </div>
-                            <!-- end::Symbol -->
-                            <!-- begin::Text -->
-                            <div class="d-flex flex-column">
-                                <a class="  fs-6 text-dark fw-bolder">
-                                    user_id
-                                </a>
-                                <span class="text-muted fw-bold">{{sharedData?.user_id}}</span>
-                            </div>
-                            <!-- end::Text -->
-                        </div>
+
                         <!-- end::Item -->
 
 
