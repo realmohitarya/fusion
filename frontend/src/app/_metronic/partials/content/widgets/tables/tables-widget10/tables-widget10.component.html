@@ -42,7 +42,19 @@
   </div>
 </div>
 
+<div *ngIf="isSelectedItem()" class="card mb-2">
+  <div class="card-body p-4">
 
+    <button class=" btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-2" (click)="checkedAll($event)">
+      <i class="fa fa-remove p-0 m-0"></i>
+    </button>
+
+    <button class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+    me-1" (click)="deleteSelectedItems()">
+      <i class="fa fa-trash p-0 m-0"></i>
+    </button>
+  </div>
+</div>
 
 <div class="card" *ngIf="!showForm">
   <div class="card-body py-3">
@@ -60,6 +72,15 @@
                   data-kt-check-target=".widget-9-check" />
               </div>
             </th> -->
+
+            <th class="w-25px">
+              <div class="
+        form-check form-check-sm form-check-custom form-check-solid
+      ">
+                <input class="form-check-input" type="checkbox" value="1" data-kt-check="true"
+                  data-kt-check-target=".widget-9-check" (click)="checkedAll($event)" [checked]="selectedAllItems()" />
+              </div>
+            </th>
             <th class="min-w-100% text-dark fw-bolder">#</th>
             <!-- <th class="min-w-150px">Date</th> -->
             <th class="min-w-150px text-dark fw-bolder">Project Title</th>
@@ -96,6 +117,15 @@
               itemsPerPage: itemsPerPage,
               currentPage: currentPage,
               totalItems: totalItems }; let i = index">
+                <td class="w-25px">
+                  <div class="
+                  form-check form-check-sm form-check-custom form-check-solid
+                ">
+                    <input class="form-check-input" type="checkbox" value="1" data-kt-check="true"
+                      data-kt-check-target=".widget-9-check" (change)="item.isSelected = !item.isSelected  "
+                      [checked]="item.isSelected === true" />
+                  </div>
+                </td>
                 <td class="text-dark fw-bold">{{ (currentPage - 1) * perPage + (i + 1) }} </td>
                 <!-- <td class="text-muted fw-bold" >{{ item.date }}</td> -->
                 <td class="text-muted fw-bold">{{ item.project_title }}</td>
@@ -636,27 +666,24 @@
             </ng-container>
 
             <!-- Navigation buttons for previous and next steps -->
-            <button (click)="previousStep()" *ngIf="step != 1 " type="button" 
-               class="btn btn-lg btn-light-primary me-3 mb-3">
+            <button (click)="previousStep()" *ngIf="step != 1 " type="button"
+              class="btn btn-lg btn-light-primary me-3 mb-3">
               <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr063.svg'"
                 class="svg-icon svg-icon-4 me-1"></span>
               Previous
             </button>
-            <button (click)="nextStep()" *ngIf="step != 3" type="button" 
-               class="btn btn-lg btn-light-primary me-3 mb-3">
+            <button (click)="nextStep()" *ngIf="step != 3" type="button" class="btn btn-lg btn-light-primary me-3 mb-3">
               Next
               <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr064.svg'"
                 class="svg-icon svg-icon-4 me-1"></span>
             </button>
 
-            <button (click)="saveChanges(!isEditMode ? 'Save' : 'Update')" 
-               *ngIf="step === 3" type="button"
+            <button (click)="saveChanges(!isEditMode ? 'Save' : 'Update')" *ngIf="step === 3" type="button"
               class=" mb-3 btn btn-lg btn-light-primary me-3">
               {{ !isEditMode ? 'Save' : 'Update' }}
             </button>
 
-            <button (click)="cancelStep()" type="button"  
-              class="btn btn-lg btn-light-primary me-3 mb-3">
+            <button (click)="cancelStep()" type="button" class="btn btn-lg btn-light-primary me-3 mb-3">
               Cancel
             </button>
             <!-- <button type="button" (click)="previousStep()" *ngIf="step != 1"

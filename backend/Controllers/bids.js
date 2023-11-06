@@ -124,54 +124,50 @@ const getBidsByUserId = (req, res) => {
       const totalItems = countResult[0].total;
 
       // Fetch the user's is_admin information
-      db.query(
-        "SELECT * FROM users WHERE id = ?",
-        [id],
-        (err, userResult) => {
+      db.query("SELECT * FROM users WHERE id = ?", [id], (err, userResult) => {
+        if (err) {
+          console.error("Error fetching is_admin information: " + err);
+          res.status(500).send("Error fetching user information");
+          return;
+        }
+
+        const is_admin = userResult[0]?.is_admin;
+
+        db.query(query, [id, perPage, offset], (err, results) => {
           if (err) {
-            console.error("Error fetching is_admin information: " + err);
-            res.status(500).send("Error fetching user information");
+            console.error("Error retrieving item: " + err);
+            res.status(500).send("Error retrieving item");
             return;
           }
 
-          const is_admin = userResult[0]?.is_admin;
-
-          db.query(query, [id, perPage, offset], (err, results) => {
-            if (err) {
-              console.error("Error retrieving item: " + err);
-              res.status(500).send("Error retrieving item");
-              return;
-            }
-
-            if (results.length === 0) {
-              res.status(200).json({
-                message: "Item not found",
-                data: {
-                  items: [],
-                  totalItems: 0,
-                  totalPages: 0,
-                  currentPage: page,
-                },
-              });
-              return;
-            }
-
-            const totalPages = Math.ceil(totalItems / perPage);
-
+          if (results.length === 0) {
             res.status(200).json({
+              message: "Item not found",
               data: {
-                items: results,
-                totalItems,
-                totalPages,
+                items: [],
+                totalItems: 0,
+                totalPages: 0,
                 currentPage: page,
-                perPage: results.length,
-                is_admin: is_admin, // Include is_admin information in the response
               },
-              message: "Records fetched successfully",
             });
+            return;
+          }
+
+          const totalPages = Math.ceil(totalItems / perPage);
+
+          res.status(200).json({
+            data: {
+              items: results,
+              totalItems,
+              totalPages,
+              currentPage: page,
+              perPage: results.length,
+              is_admin: is_admin, // Include is_admin information in the response
+            },
+            message: "Records fetched successfully",
           });
-        }
-      );
+        });
+      });
     }
   );
 };
@@ -214,7 +210,21 @@ const updateBid = (req, res) => {
     }
   );
 };
+const deleteBids = (req, res) => {
+  const { ids } = req.body; // Assuming you pass an array of IDs in the request body
 
+  // Check if the user is an admin (modify this logic based on your actual user authentication)
+
+  // User is an admin, proceed with the items deletion
+  db.query("DELETE FROM bids WHERE id IN (?)", [ids], (err, results) => {
+    if (err) {
+      console.error("Error deleting bids: " + err);
+      res.status(500).json({ error: "Error deleting items" });
+      return;
+    }
+    res.json({ message: "Bids deleted" });
+  });
+};
 // Delete an item
 const deleteBid = (req, res) => {
   const { id } = req.params;
@@ -236,22 +246,26 @@ const shareBid = (req, res) => {
   const id = req.params.id;
 
   // Query the database to retrieve the bid associated with the identifier
-  db.query(" SELECT bids.*, users.fullname AS fullname FROM bids LEFT JOIN users ON bids.user_id = users.id WHERE bids.id = ?", [id], (err, result) => {
-    if (err) {
-      console.error("Error retrieving bid: " + err);
-      res.status(500).send("Error retrieving bid" + err);
-      return;
-    }
+  db.query(
+    " SELECT bids.*, users.fullname AS fullname FROM bids LEFT JOIN users ON bids.user_id = users.id WHERE bids.id = ?",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.error("Error retrieving bid: " + err);
+        res.status(500).send("Error retrieving bid" + err);
+        return;
+      }
 
-    if (result.length === 0) {
-      // Handle the case where the bid with the given identifier does not exist.
-      res.status(404).send("Bid not found");
-      return;
-    }
+      if (result.length === 0) {
+        // Handle the case where the bid with the given identifier does not exist.
+        res.status(404).send("Bid not found");
+        return;
+      }
 
-    // Render a view to display the bid's details or return the bid data in the response.
-    res.json(result[0]);
-  });
+      // Render a view to display the bid's details or return the bid data in the response.
+      res.json(result[0]);
+    }
+  );
 };
 module.exports = {
   addBids,
@@ -260,4 +274,5 @@ module.exports = {
   updateBid,
   deleteBid,
   shareBid,
+  deleteBids,
 };

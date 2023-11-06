@@ -22,6 +22,8 @@ export class TablesWidget10Component implements OnInit {
   public showForm = false;
   public showAllData = false;
   isUpdated: boolean = false;
+  AllItems: any[] = [];
+
   initialFormValues: any;
   updatedData: any;
   chartMonths: any = [];
@@ -532,6 +534,57 @@ export class TablesWidget10Component implements OnInit {
     });
   }
 
+  deleteSelectedItems() {
+    if (this.items.filter((el) => el.isSelected == true)?.length > 0) {
+      const itemIds = this.items
+        .filter((el) => el.isSelected == true)
+        .map((item) => item.id);
+
+      // Set the headers to handle CORS
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      // Make the HTTP DELETE request
+      this.dataService.deleteBids(itemIds).subscribe(
+        (response) => {
+          console.log('Bids deleted successfully', response);
+          this.getData();
+          this.cdr.detectChanges();
+          // Add any additional handling here
+        },
+        (error) => {
+          console.error('Error deleting bids', error);
+          // Handle the error here
+        }
+      );
+    } else {
+      // Handle the case where no items are selected
+      console.log('No items selected to delete.');
+    }
+  }
+
+  isSelectedItem() {
+    if (this.items.some((el) => el.isSelected === true)) {
+      return true;
+    }
+    return false;
+  }
+
+  checkedAll(event: any) {
+    if (event.target.checked) {
+      // If "Select All" is checked, add all items to the allItems array
+      this.AllItems = [...this.items]; // Copy the items array to allItems
+      console.log('salllll', this.AllItems);
+      this.items.forEach((el) => (el.isSelected = true));
+    } else {
+      this.items.forEach((el) => (el.isSelected = false));
+    }
+    this.cdr.detectChanges();
+  }
+  selectedAllItems() {
+    return this.items.every((el) => el.isSelected === true);
+  }
   getData() {
     this.isdataLoading = true;
     this.route.queryParams.subscribe((query: any) => {
@@ -553,6 +606,7 @@ export class TablesWidget10Component implements OnInit {
         (res: any) => {
           if (res?.data?.items) {
             this.items = res.data.items;
+            this.items.forEach((el) => (el.isSelected = false));
             console.log('dsadasdsad>>>>', this.items);
             this.dataSharingService.setObject(this.items);
             this.totalItems = res.data.totalItems;

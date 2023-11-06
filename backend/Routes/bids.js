@@ -42,6 +42,7 @@ route.put("/bids/:id", verifyToken, bidController.updateBid);
 
 // Delete an item
 route.delete("/bids/:id", verifyToken, bidController.deleteBid);
+route.delete("/delete-bids", verifyToken, bidController.deleteBids);
 
 
 route.get("/sharebid/:id", bidController.shareBid);

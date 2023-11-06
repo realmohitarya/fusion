@@ -11,7 +11,7 @@ export class DataService {
   selectedYear: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   // selectedYear:any='';
-
+  url: any = `${environment.api_url}/delete-bids`;
   apiUrl: any = `${environment.api_url}/bids`;
   sharebid: any = `${environment.api_url}/sharebid`;
   stats: any = `${environment.api_url}/stats`;
@@ -67,4 +67,15 @@ export class DataService {
   deleteBid(id: any) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+
+  deleteBids(ids: number[]) {
+    return this.http
+      .delete(`${this.url}`, {
+        body: { ids },
+      })
+     
+  }
+
+
 }
